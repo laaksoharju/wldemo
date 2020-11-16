@@ -1,18 +1,30 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <a class="link" @click="setupWavelength">Play Wavelength</a>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  created: function () {
+    this.$store.commit('SET_ROOM_ID');
+  },
+  methods: {
+    setupWavelength: function () {
+      this.$store.state.socket.emit('setupWavelength', this.$store.state.roomId);
+      this.$router.push("/wavelength/" + this.$store.state.roomId);
+    },
   }
 }
 </script>
+<style scoped>
+
+  .link {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+</style>
