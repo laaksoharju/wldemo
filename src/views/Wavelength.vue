@@ -33,7 +33,7 @@ export default {
   },
   data: function () {
     return {
-      publicPath: "wldemo.herokuapp.com/#", //"localhost:8080/#"
+      publicPath: "wavelengthdemo.herokuapp.com/#", //"localhost:8080/#"
       card: {left: '', right: ''},
       radius: 180,
       target: 0,
