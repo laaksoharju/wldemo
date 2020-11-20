@@ -1,5 +1,16 @@
 <template>
   <div id="dial-wrapper" v-touch:moving="moveDial" @mousemove="moveDial">
+    <svg class="back" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="back-gradient" cx="0.5" cy="1">
+          <stop offset="0%" stop-color="darkgray"/>
+          <stop offset="100%" stop-color="gray"/>
+        </radialGradient>
+      </defs>
+      <path d="M 360 180
+         A 180 180, 0, 0, 0, 0 180
+         L 180 180 Z" fill="url(#back-gradient)"/>
+    </svg>
     <svg ref="dial" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
       <path :d="outerArc" fill="yellow"/>
       <path :d="middleArc" fill="orange"/>
@@ -139,8 +150,9 @@ export default {
     width:50vw;
     height:25vw;
     overflow: hidden;
-    border-radius: 0.5vw;
+    border-radius: 0.5rem;
     cursor: col-resize;
+    padding-top: 1rem;
   }
   #dial-wrapper svg {
     pointer-events: none;

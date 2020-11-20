@@ -6,7 +6,9 @@
       <WlPoints :team="'team2'" :points="points.team2" :isRevealed="isRevealed" @pointsUpdate="addPoints('team2', $event)"/>
     </header>
     <main>
-      <WlDial :target="target" :isRevealed="isRevealed" />
+      <div class="dial">
+        <WlDial :target="target" :isRevealed="isRevealed"/>
+      </div>
       <div class="card-slot">
         <WlCard :card="card" />
       </div>
@@ -125,7 +127,7 @@ export default {
   }
   main {
     user-select: none;
-    margin: 1em auto;
+    margin: auto;
     width: 50vw;
   }
   footer {
@@ -217,10 +219,15 @@ export default {
     }
 
     #dial-wrapper {
-      position: relative;
+      position: fixed;
       width:90vw;
       height:45vw;
       overflow: hidden;
+      background: rgba(0,0,0,0.7);
+      box-shadow: 0 0 5vw rgba(0,0,0,1)
+    }
+    .dial {
+      height: 50vw;
     }
     .team-section {
       font-size: 10vw;
