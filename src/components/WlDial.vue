@@ -7,7 +7,7 @@
     </svg>      
     <svg :class="['cover', {revealed : isRevealed}]" viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="cover-gradient" cy="1">
+        <radialGradient id="cover-gradient" cx="0.5" cy="1">
           <stop offset="0%" stop-color="lightcyan"/>
           <stop offset="100%" stop-color="lightskyblue"/>
         </radialGradient>
@@ -116,6 +116,7 @@ export default {
         y1 =  this.sizes.h - y2;
         this.dialX = this.radius * 2 * Math.max(0, Math.min(x1, this.sizes.w)) / this.sizes.w;
         this.dialY = this.radius * Math.max(0, Math.min(y1, this.sizes.h)) / this.sizes.h;
+        
         this.$store.state.socket.emit('wavelengthMoveDial', {roomId: this.$route.params.id, playerId: this.$store.state.playerId, x: this.dialX, y: this.dialY })
       }
     },
@@ -138,6 +139,8 @@ export default {
     width:50vw;
     height:25vw;
     overflow: hidden;
+    border-radius: 0.5vw;
+    cursor: col-resize;
   }
   #dial-wrapper svg {
     pointer-events: none;

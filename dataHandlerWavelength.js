@@ -20,15 +20,12 @@ function Data() {
   this.rooms = {};
 }
 
-Data.prototype.createDeck = function() {
-  let deck = this.data[wlDeck];
-  return shuffle(deck);
-}
 
-Data.prototype.getUILabels = function (lang) {
-  var ui = require("./data/wavelength-" + (lang || defaultLanguage) + ".json");
-  return ui;
-};
+/***********************************************
+For performance reasons, methods are added to the
+prototype of the Data object/class
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+***********************************************/
 
 /*
   Function to load initial data from CSV files into the object
@@ -41,12 +38,28 @@ Data.prototype.initializeTable = function (table) {
     });
 };
 
+Data.prototype.initializeData = function() {
+  console.log("Starting to build data tables");
+  this.initializeTable(wlDeck);
+}
+
+Data.prototype.getUILabels = function (lang) {
+  var ui = require("./data/wavelength-" + (lang || defaultLanguage) + ".json");
+  return ui;
+};
+
 Data.prototype.createRoom = function(roomId) {
   let room = {};
   room.players = [];
   room.deck = this.createDeck();
   room.playedMissions = [];
+  room.points = {team1: 0, team2: 0};
   this.rooms[roomId] = room;
+}
+
+Data.prototype.createDeck = function() {
+  let deck = this.data[wlDeck];
+  return shuffle(deck);
 }
 
 Data.prototype.joinGame = function (roomId, playerId) {
@@ -66,7 +79,18 @@ Data.prototype.joinGame = function (roomId, playerId) {
 Data.prototype.getInfo = function (id) {
   let room = this.rooms[id]
   if (typeof room !== 'undefined') {
-    return {playerCount: room.playerCount, cardsRemaining: room.deck.length}
+    return {playerCount: room.playerCount, 
+            cardsRemaining: room.deck.length,
+            points: room.points}
+  }
+  else return {};
+}
+
+Data.prototype.updatePoints = function (roomId, team, points) {
+  let room = this.rooms[roomId]
+  if (typeof room !== 'undefined') {
+    room.points[team] += points;
+    return room.points;
   }
   else return {};
 }
@@ -74,7 +98,9 @@ Data.prototype.getInfo = function (id) {
 Data.prototype.getNewMission = function (roomId) {
   let room = this.rooms[roomId];
   if (typeof room !== 'undefined') {
-    let mission = {card: room.deck.pop(), target: Math.random() };
+    let mission = {card: room.deck.pop(), 
+                   target: Math.random(), 
+                   points: room.points };
     room.playedMissions.push(mission);
     return mission;
   }
@@ -90,12 +116,6 @@ Data.prototype.getCurrentMission = function (roomId) {
       return room.playedMissions[room.playedMissions.length - 1];
     }
   }
-}
-
-
-Data.prototype.initializeData = function() {
-  console.log("Starting to build data tables");
-  this.initializeTable(wlDeck);
 }
 
 module.exports = Data;

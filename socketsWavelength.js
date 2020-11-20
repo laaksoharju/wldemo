@@ -8,8 +8,10 @@ function sockets(io, socket, data) {
       socket.emit('newMission', data.getCurrentMission(d.roomId));
     });
     socket.on('wavelengthUpdate', function(d) {
-      //points to the winning team
       io.to(d.roomId).emit('newMission', data.getNewMission(d.roomId));
+    });
+    socket.on('wavelengthUpdatePoints', function(d) {
+      io.to(d.roomId).emit('wavelengthPointsUpdated', data.updatePoints(d.roomId, d. team, d.points));
     });
     socket.on('wavelengthReveal', function(d) {
       io.to(d.roomId).emit('wavelengthRevealed')

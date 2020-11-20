@@ -1,21 +1,38 @@
 <template>
   <div>
-    <p>
-      Invite other players with this link:
-      <input type="text" class="link" :value="publicPath + $route.path" @click="selectAll" readonly="readonly">
-    </p>
+    <header>
+      <WlPoints :team="'team1'" :points="points.team1" :isRevealed="isRevealed" @pointsUpdate="addPoints('team1', $event)"/>
+      <div></div>
+      <WlPoints :team="'team2'" :points="points.team2" :isRevealed="isRevealed" @pointsUpdate="addPoints('team2', $event)"/>
+    </header>
     <main>
       <WlDial :target="target" :isRevealed="isRevealed" />
       <div class="card-slot">
         <WlCard :card="card" />
       </div>
-      <button v-show="!isRevealed" class="button reveal" @click="reveal"> {{labels.reveal}} </button>
-      <button v-show="isRevealed" class="button hide" @click="hide"> {{labels.hide}} </button>
-      <button v-show="isRevealed" class="button next" @click="next"> {{labels.new}} </button>
+      <div class="buttons">
+        <button :class="['button', 'reveal', {'hidden' : isRevealed}]" @click="reveal">
+          {{ labels.reveal }} 
+        </button>
+        <button :class="['button', 'hide', {'hidden': !isRevealed}]" @click="hide">
+          {{ labels.hide }} 
+        </button>
+        <button :class="['button', 'next', {'hidden': !isRevealed}]" @click="next">
+          {{ labels.new }}
+        </button>
+      </div>
     </main>
-    <div class="new">
-      <router-link to="/">Create a new session!</router-link>
-    </div>
+    <footer>
+      <div class="new">
+        <p>
+          Invite other players with this link:
+          <input type="text" class="link" :value="publicPath + $route.path" @click="selectAll" readonly="readonly">
+        </p>
+        <p>
+          Or <router-link to="/">create a new room!</router-link>
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -24,25 +41,31 @@
 
 import WlCard from '@/components/WlCard.vue'
 import WlDial from '@/components/WlDial.vue'
+import WlPoints from '@/components/WlPoints.vue'
 
 export default {
   name: 'Wavelength',
   components: {
     WlCard,
-    WlDial
+    WlDial,
+    WlPoints
   },
   data: function () {
     return {
       publicPath: "wavelengthdemo.herokuapp.com/#", //"localhost:8080/#"
-      card: {left: '', right: ''},
+      card: { left: '', 
+              right: '' },
       radius: 180,
       target: 0,
       dialX: 180,
       dialY: 0,
       isRevealed: false,
       touchScreen: false,
-      maxSizes: {x: 0, y: 0},
-      labels: {}
+      maxSizes: { x: 0, 
+                  y: 0 },
+      labels: {},
+      points: {team1: 0,
+               team2: 0 }
     }
   },
   created: function () {
@@ -58,7 +81,9 @@ export default {
     this.$store.state.socket.on('newMission', function (mission) {
       this.card = mission.card;
       this.target = mission.target;
+      this.points = mission.points;
     }.bind(this));
+    this.$store.state.socket.on('wavelengthPointsUpdated', (d) => this.points = d );
     this.$store.state.socket.on('wavelengthRevealed', () => this.isRevealed = true);
     this.$store.state.socket.on('wavelengthHidden', () => this.isRevealed = false);
   },
@@ -82,13 +107,29 @@ export default {
       window.setTimeout(() =>
         this.$store.state.socket.emit("wavelengthUpdate", {roomId: this.$route.params.id, playerId: this.$store.state.playerId }), time);
     },
+    addPoints: function (team, points) {
+      this.$store.state.socket.emit("wavelengthUpdatePoints", {roomId: this.$route.params.id, team: team, points: points});
+    }
   },
 }
 </script>
 <style scoped>
+  header {
+    user-select: none;
+    position: fixed;
+    width:100%;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    z-index: 4;
+    pointer-events: none;
+  }
   main {
-    margin: auto;
+    user-select: none;
+    margin: 1em auto;
     width: 50vw;
+  }
+  footer {
+    margin-top: 5em;
   }
   p {
     width:25vw;
@@ -101,9 +142,10 @@ export default {
   .card-slot div {
     margin:auto;
   }
- 
+  .new {
+    margin:auto;
+  }
   .new a {
-    position: fixed;
     text-decoration: none;
     bottom: calc(2vw + 1rem);
     left: 2vw;
@@ -124,9 +166,13 @@ export default {
     padding: 0;
     color:ivory;
   }
+  .buttons {
+    height: 8rem;
+  }
   button {
     font-family: inherit;
     display: block;
+    cursor: pointer;
     text-transform: uppercase;
     border-radius: 1rem;
     height: 6rem;
@@ -138,6 +184,9 @@ export default {
     font-size: 1.5em;
     text-shadow: 0 0 1rem rgba(0,0,0,0.5);
     user-select: none;
+    opacity: 1;
+    transition: 1s;
+    transition-timing-function: linear;
   }
 
   .reveal {
@@ -146,15 +195,18 @@ export default {
   .hide {
     background: linear-gradient(orange, firebrick);
   }
+
+  .hidden {
+    opacity: 0;
+    height:0;
+  }
   .next {
     background: linear-gradient(lightskyblue,cornflowerblue);
-    position: fixed;
     height:3rem;
     width: 7rem;
     font-size: 1em;
-    bottom: 2vw;
-    right: 2vw;
   }
+
   @media screen and (max-width: 800px) {
     main {
       width:90vw;
@@ -169,6 +221,9 @@ export default {
       width:90vw;
       height:45vw;
       overflow: hidden;
+    }
+    .team-section {
+      font-size: 10vw;
     }
   }
 </style>

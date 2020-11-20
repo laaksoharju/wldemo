@@ -15,5 +15,7 @@ body {
 	background: radial-gradient(dimgray, black);
 	color: ivory;
 	font-size: 100%;
+	margin:0;
+	padding: 0;
 }
 </style>

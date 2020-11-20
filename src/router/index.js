@@ -12,7 +12,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/wavelength/:id',
+    path: '/room/:id',
     name: 'Wavelength',
     component: Wavelength
   }
