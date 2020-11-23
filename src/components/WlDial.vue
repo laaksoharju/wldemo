@@ -108,6 +108,7 @@ export default {
     },
     moveDial: function (event) {
       if (mouseDown || event.touches?.length > 0) {
+        event.preventDefault();
         let x = event.clientX
         let y = event.clientY
 

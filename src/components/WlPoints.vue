@@ -35,6 +35,7 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   font-size: 5vw;
   pointer-events: all;
+  margin-top: 0.5rem;
 }
 .points {
   grid-area: pp;

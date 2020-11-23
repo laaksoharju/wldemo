@@ -27,11 +27,11 @@
     <footer>
       <div class="new">
         <p>
-          Invite other players with this link:
+          {{ labels.invite }}
           <input type="text" class="link" :value="publicPath + $route.path" @click="selectAll" readonly="readonly">
         </p>
         <p>
-          Or <router-link to="/">create a new room!</router-link>
+          <router-link to="/">{{ labels.create }}</router-link>
         </p>
       </div>
     </footer>
@@ -77,7 +77,8 @@ export default {
     const newRoute = this.$route.params.id + "?id=" + this.$store.state.playerId;
     if (this.$route.params.id + "?id=" + this.$route.query.id !== newRoute)
       this.$router.push(newRoute);
-    this.$store.state.socket.emit('wavelengthLoaded', {roomId: this.$route.params.id, playerId: this.$store.state.playerId } );
+    this.$store.state.socket.emit('wavelengthLoaded', {roomId: this.$route.params.id, 
+      playerId: this.$store.state.playerId } );
     this.$store.state.socket.on('wavelengthLabels', labels =>
       this.labels = labels)
     this.$store.state.socket.on('newMission', function (mission) {

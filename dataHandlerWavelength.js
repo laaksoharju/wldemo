@@ -2,9 +2,8 @@
 
 let csv = require("csvtojson");
 
-let wlDeck = "wavelength";
-let defaultLanguage = "en";
-
+let wlDeck = "wavelength-";
+let languages = ["en", "se"];
 /* https://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array */
 function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
@@ -40,25 +39,29 @@ Data.prototype.initializeTable = function (table) {
 
 Data.prototype.initializeData = function() {
   console.log("Starting to build data tables");
-  this.initializeTable(wlDeck);
+  for (let i in languages) {
+    this.initializeTable(wlDeck + languages[i]);
+  }
 }
 
-Data.prototype.getUILabels = function (lang) {
-  var ui = require("./data/wavelength-" + (lang || defaultLanguage) + ".json");
+Data.prototype.getUILabels = function (roomId) {
+  let lang = this.rooms[roomId].lang;
+  var ui = require("./data/wavelength-" + lang + ".json");
   return ui;
 };
 
-Data.prototype.createRoom = function(roomId) {
+Data.prototype.createRoom = function(roomId, lang="en") {
   let room = {};
   room.players = [];
-  room.deck = this.createDeck();
+  room.lang = lang;
+  room.deck = this.createDeck(lang);
   room.playedMissions = [];
   room.points = {team1: 0, team2: 0};
   this.rooms[roomId] = room;
 }
 
-Data.prototype.createDeck = function() {
-  let deck = this.data[wlDeck];
+Data.prototype.createDeck = function(lang) {
+  let deck = this.data[wlDeck + lang];
   return shuffle(deck);
 }
 

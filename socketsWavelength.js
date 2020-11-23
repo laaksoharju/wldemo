@@ -1,10 +1,10 @@
 function sockets(io, socket, data) {
     socket.on('setupWavelength', function(d) {
-      data.createRoom(d);
+      data.createRoom(d.roomId, d.lang);
     })
     socket.on('wavelengthLoaded', function(d) {
       socket.join(d.roomId);
-      socket.emit('wavelengthLabels', data.getUILabels());
+      socket.emit('wavelengthLabels', data.getUILabels(d.roomId));
       socket.emit('newMission', data.getCurrentMission(d.roomId));
     });
     socket.on('wavelengthUpdate', function(d) {
