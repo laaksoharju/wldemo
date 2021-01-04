@@ -1,18 +1,26 @@
 <template>
   <div>
-    <header>
+    <header v-if="labels.invite">
       <WlPoints :team="'team1'" :points="points.team1" :isRevealed="isRevealed" @pointsUpdate="addPoints('team1', $event)"/>
       <div></div>
       <WlPoints :team="'team2'" :points="points.team2" :isRevealed="isRevealed" @pointsUpdate="addPoints('team2', $event)"/>
     </header>
     <main>
-      <div class="dial">
+      <div v-if="!labels.invite">
+        <p>
+          This room does not exist.
+        </p>
+        <p>
+          <router-link to="/" class="error">Create a new room!</router-link>
+        </p>
+      </div>
+      <div v-if="labels.invite" class="dial">
         <WlDial :target="target" :isRevealed="isRevealed"/>
       </div>
-      <div class="card-slot">
+      <div v-if="labels.invite" class="card-slot">
         <WlCard :card="card" />
       </div>
-      <div class="buttons">
+      <div v-if="labels.invite" class="buttons">
         <button :class="['button', 'reveal', {'hidden' : isRevealed}]" @click="reveal">
           {{ labels.reveal }} 
         </button>
@@ -24,7 +32,7 @@
         </button>
       </div>
     </main>
-    <footer>
+    <footer v-if="labels.invite">
       <div class="new">
         <p>
           {{ labels.invite }}
@@ -137,6 +145,10 @@ export default {
   p {
     width:25vw;
     margin:1rem auto;
+  }
+  .error {
+    font-size:1.5em;
+    color: pink;
   }
   .card-slot {
     margin-top: 1em;

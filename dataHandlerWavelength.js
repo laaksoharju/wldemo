@@ -45,9 +45,13 @@ Data.prototype.initializeData = function() {
 }
 
 Data.prototype.getUILabels = function (roomId) {
-  let lang = this.rooms[roomId].lang;
-  var ui = require("./data/wavelength-" + lang + ".json");
-  return ui;
+  let room = this.rooms[roomId];
+  if (typeof room !== 'undefined') {
+    let lang = room.lang;
+    var ui = require("./data/wavelength-" + lang + ".json");
+    return ui;
+  }
+  return {};
 };
 
 Data.prototype.createRoom = function(roomId, lang="en") {
