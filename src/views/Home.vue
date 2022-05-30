@@ -20,6 +20,9 @@
         So buy the game, read the rules and <a @click="setupWavelength('en')">play Wavelength responsibly</a>.
       </p>
       <p>
+        For certain groups, <a @click="setupWavelength('se')">the scientific version</a> may be fun.
+      </p>
+      <p>
         Eller <a @click="setupWavelength('se')">spela på svenska</a>.
       </p>
       <p>
