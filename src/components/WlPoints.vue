@@ -1,14 +1,18 @@
 <template>
   <div :class="['team-section', team]">
-    <button @click="addPoints(-1)" :class="['minusP', {'hidden': !isRevealed}]">
-      <span> - </span>
-    </button>
+    <div>
+      <button @click="addPoints(-1)" :class="['minusP', {'hidden': !isRevealed}]">
+        <span>-</span>
+      </button>
+    </div>
     <div class="points">
       {{ points }}
     </div>
-    <button @click="addPoints(1)" :class="['oneP', {'hidden': !isRevealed}]">
-      <span> + </span>
-    </button>
+    <div>
+      <button @click="addPoints(1)" :class="['oneP', {'hidden': !isRevealed}]">
+        <span>+</span>
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -33,7 +37,7 @@ export default {
 .team-section {
   display: grid;
   grid-template-areas: "minusP pp oneP";
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 3vw 10vw 3vw;
   font-size: 5vw;
   pointer-events: all;
   margin-top: 0.5rem;
@@ -53,6 +57,8 @@ button {
   cursor: pointer;
   transition: 1s;
   opacity: 1;
+  padding:0;
+  touch-action: manipulation;
 }
 .hidden {
   opacity: 0;

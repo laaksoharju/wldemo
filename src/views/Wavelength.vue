@@ -125,9 +125,11 @@ export default {
   header {
     user-select: none;
     position: fixed;
-    width:100vw;
+    left:2vw;
+    top:0;
+    width: 96vw;
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-columns: 20% 60% 20%;
     z-index: 4;
     pointer-events: none;
   }
@@ -167,10 +169,7 @@ export default {
   .new a:visited {
     color:ivory;
   }
-  .card-row {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-  }
+
   .link {
     font-family: inherit;
     border: 0;
