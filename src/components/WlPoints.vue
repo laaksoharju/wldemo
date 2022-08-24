@@ -22,7 +22,8 @@ export default {
   },
   methods: {
     addPoints(points) {
-      this.$emit('pointsUpdate', points);
+      if (this.isRevealed)
+        this.$emit('pointsUpdate', points);
     }
   }
 }

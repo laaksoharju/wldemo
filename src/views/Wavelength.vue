@@ -27,7 +27,7 @@
         <button :class="['button', 'hide', {'hidden': !isRevealed}]" @click="hide">
           {{ labels.hide }} 
         </button>
-        <button :class="['button', 'next', {'hidden': !isRevealed}]" @click="next">
+        <button class="skip" @click="next">
           {{ labels.new }}
         </button>
       </div>
@@ -37,9 +37,6 @@
         <p>
           {{ labels.invite }}
           <input type="text" class="link" :value="publicPath + $route.path" @click="selectAll" readonly="readonly">
-        </p>
-        <p>
-          <router-link to="/">{{ labels.create }}</router-link>
         </p>
       </div>
     </footer>
@@ -170,21 +167,27 @@ export default {
   .new a:visited {
     color:ivory;
   }
+  .card-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+  }
   .link {
     font-family: inherit;
     border: 0;
     background: unset;
-    width: 20em;
+    width: 23em;
+    max-width: 90vw;
     font-size: 1em;
     border-bottom: 2px dotted ivory;
     text-align: center;
     padding: 0;
     color:ivory;
+    outline:none;
   }
   .buttons {
     height: 8rem;
   }
-  button {
+  .button {
     font-family: inherit;
     display: block;
     cursor: pointer;
@@ -214,6 +217,24 @@ export default {
   .hidden {
     opacity: 0;
     height:0;
+  }
+  .skip {
+    font-family: inherit;
+    background: none;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto;
+    font-size: 1.2em;
+    color: white;
+    border: 0;
+    padding:1rem;
+    background: radial-gradient(rgba(255,255,255,0.1), rgba(0,0,0,0));
+    border-radius: 5rem;
+  }
+  .skip-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .next {
     background: linear-gradient(lightskyblue,cornflowerblue);
