@@ -125,7 +125,7 @@ export default {
   header {
     user-select: none;
     position: fixed;
-    width:100%;
+    width:100vw;
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
     z-index: 4;
